@@ -1,5 +1,7 @@
 # Refresher: Cache Your Test Database Schema, Skip the Re-Migration
 
+![Refresher banner](art/banner.svg)
+
 [![Tests](https://github.com/AmjadIqbal/refresher/actions/workflows/ci.yml/badge.svg)](https://github.com/AmjadIqbal/refresher/actions/workflows/ci.yml)
 [![Latest Version](https://img.shields.io/packagist/v/amjadiqbal/refresher.svg)](https://packagist.org/packages/amjadiqbal/refresher)
 [![License](https://img.shields.io/packagist/l/amjadiqbal/refresher.svg)](LICENSE.md)

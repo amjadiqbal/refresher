@@ -1,0 +1,75 @@
+<svg width="1280" height="360" viewBox="0 0 1280 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#0f2523"/>
+    </linearGradient>
+    <!-- snapshot-cache teal/emerald gradient — deliberately its own hue family:
+         distinct from Filament's amber/gold, Kiln's terracotta/burnt-orange,
+         and Alertify's blue (#3593D2), so nothing here reads as borrowed branding -->
+    <linearGradient id="snap" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1280" height="360" fill="url(#bg)"/>
+  <circle cx="175" cy="180" r="220" fill="url(#glow)"/>
+
+  <!-- refresher mark: a stack of cached DB-schema snapshots (older = fainter,
+       further back) with a restore/refresh arrow cycling the newest one back in -->
+  <g transform="translate(75,90)">
+    <!-- oldest cached snapshot -->
+    <g opacity="0.35" transform="translate(18,34)">
+      <ellipse cx="60" cy="14" rx="60" ry="14" fill="#5eead4"/>
+      <path d="M0 14 L0 34 A60 14 0 0 0 120 34 L120 14" fill="#0d9488"/>
+      <ellipse cx="60" cy="34" rx="60" ry="14" fill="none" stroke="#5eead4" stroke-width="2"/>
+    </g>
+    <!-- middle cached snapshot -->
+    <g opacity="0.6" transform="translate(9,17)">
+      <ellipse cx="60" cy="14" rx="60" ry="14" fill="#5eead4"/>
+      <path d="M0 14 L0 34 A60 14 0 0 0 120 34 L120 14" fill="#0f766e"/>
+      <ellipse cx="60" cy="34" rx="60" ry="14" fill="none" stroke="#5eead4" stroke-width="2"/>
+    </g>
+    <!-- current, restored snapshot -->
+    <g transform="translate(0,0)">
+      <ellipse cx="60" cy="14" rx="60" ry="14" fill="#a7f3d0"/>
+      <path d="M0 14 L0 46 A60 14 0 0 0 120 46 L120 14" fill="url(#snap)"/>
+      <ellipse cx="60" cy="46" rx="60" ry="14" fill="none" stroke="#a7f3d0" stroke-width="2" opacity="0.6"/>
+      <ellipse cx="60" cy="14" rx="60" ry="14" fill="none" stroke="#0f2523" stroke-width="2"/>
+    </g>
+    <!-- restore cycle arrow wrapping the stack -->
+    <path d="M156 30 A98 98 0 0 1 96 148" fill="none" stroke="#6ee7b7" stroke-width="7" stroke-linecap="round"/>
+    <polygon points="96,148 116,140 108,161" fill="#6ee7b7"/>
+    <path d="M4 108 A98 98 0 0 1 64 -6" fill="none" stroke="#6ee7b7" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+    <polygon points="64,-6 44,2 52,-19" fill="#6ee7b7" opacity="0.9"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="270" y="175" font-family="Helvetica, Arial, sans-serif" font-size="88" font-weight="700" fill="#f5f5f4">Refresher</text>
+  <text x="274" y="223" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="500" fill="#6ee7b7" letter-spacing="0.2">
+    Cache Your Test Database Schema, Skip the Re-Migration
+  </text>
+
+  <!-- feature chips -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#d6d3d1">
+    <g transform="translate(274,268)">
+      <rect width="186" height="38" rx="19" fill="#1c2b28" stroke="#134e4a"/>
+      <text x="93" y="25" text-anchor="middle">migration-hash cache</text>
+    </g>
+    <g transform="translate(474,268)">
+      <rect width="164" height="38" rx="19" fill="#1c2b28" stroke="#134e4a"/>
+      <text x="82" y="25" text-anchor="middle">MySQL + SQLite</text>
+    </g>
+    <g transform="translate(652,268)">
+      <rect width="146" height="38" rx="19" fill="#1c2b28" stroke="#134e4a"/>
+      <text x="73" y="25" text-anchor="middle">drop-in trait</text>
+    </g>
+  </g>
+
+  <text x="1250" y="335" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#78716c">amjadiqbal/refresher</text>
+</svg>
