@@ -1,0 +1,17 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+
+    tmpDir: build/phpstan
+
+    ignoreErrors:
+        -
+            # RefreshesWithRefresher is a public API trait meant to be `use`-d by a
+            # consuming app's own TestCase, not by anything inside this package's
+            # own src/ — so PHPStan correctly sees zero internal usages.
+            identifier: trait.unused
+            path: src/Testing/RefreshesWithRefresher.php
