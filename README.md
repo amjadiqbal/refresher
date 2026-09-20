@@ -198,3 +198,5 @@ The MIT License (MIT). Please see [LICENSE.md](LICENSE.md) for more information.
 
 **Amjad Iqbal**
 - Website: [amjad.com.pk](https://amjad.com.pk)
+- Discord: [Community](https://discord.com/channels/1352854772859932702/1352854916690874388)
+- Upwork: [Hire me](https://www.upwork.com/freelancers/amjadkhatri)
