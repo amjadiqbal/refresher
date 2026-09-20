@@ -51,6 +51,17 @@ class MySqlSnapshotDriver implements SnapshotDriver
             '--routines',
             '--triggers',
             '--skip-lock-tables',
+            // Without this, a server with binary logging/GTID enabled emits
+            // `SET @@GLOBAL.GTID_PURGED=...` and wraps the dump in
+            // `SET @@SESSION.SQL_LOG_BIN=0` — both require SUPER/
+            // SYSTEM_VARIABLES_ADMIN to execute on restore. Confirmed for
+            // real: restoring against a MySQL user with only ALL PRIVILEGES
+            // on the target database (no SUPER) failed with exactly
+            // "Access denied; you need ... SUPER, SYSTEM_VARIABLES_ADMIN or
+            // SESSION_VARIABLES_ADMIN" until this flag was added. A test
+            // database's own dedicated restore user should never need
+            // server-admin privileges just to load a schema snapshot.
+            '--set-gtid-purged=OFF',
             '--result-file='.$tmp,
             (string) $this->connectionConfig['database'],
         ]);

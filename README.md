@@ -134,19 +134,30 @@ rather than failing confusingly partway through a dump.
 
 ## Real measured timing
 
-Measured on this machine (Apple, PHP 8.5.4) against a real Laravel 13.32.0 app
-(`src/laravel-test-app` in this monorepo) with its real migration set, timing
-`migrate:fresh` against `refresher:restore` on an already-cached snapshot, 5 runs each,
-median reported. See `research/refresher-benchmark.md` in this package's source repo/monorepo for
-the exact commands and raw output.
+Measured on a real Laravel 13.32.0 / PHP 8.5.4 app, 64 migrations (schema-heavy, to make the
+effect measurable), 5 runs per case, median reported. Full raw numbers, exact commands, and one
+honest correction (an initial "win" on MySQL turned out to be a bug — restore was failing fast, not
+actually restoring — see below) are in this monorepo's `research/refresher-benchmark.md`.
 
-| Driver | `migrate:fresh` (median) | `refresher:restore` from cache (median) |
+| Scenario | `migrate:fresh` (median) | `refresher:restore` from cache (median) |
 |---|---|---|
-| SQLite | see benchmark log | see benchmark log |
-| MySQL | see benchmark log | see benchmark log |
+| SQLite, schema only | 0.44s | 0.27s (**~39% faster**) |
+| MySQL, schema only, no data | 0.90s | 0.97s (no win — see note) |
+| MySQL, 64 tables + 50,000 seeded rows | 2.59s | 1.99s (**~23% faster**) |
 
-(Numbers are filled in from a real, reproducible run — not estimated — see the linked log for the
-exact commands so you can reproduce them against your own migration set and hardware.)
+**Honest finding, not a sales number:** on a schema-only MySQL database with no seeded data,
+restoring from a `mysqldump` snapshot was *not* faster than `migrate:fresh` on this machine — two
+`mysql`/`mysqldump` client process spawns plus parsing a text SQL file doesn't beat 64 in-process
+`CREATE TABLE` calls over a local socket when there's no data to avoid re-inserting. The real win
+shows up once there's actual seeded fixture data to skip re-creating, which is the realistic case
+`RefreshDatabase`-based test suites are usually in. SQLite's plain-file-copy driver wins either way
+because there's no per-statement client-process overhead to begin with.
+
+The same benchmark run also caught and fixed a real MySQL bug before shipping: a server with
+GTID/binlog enabled makes `mysqldump` emit statements (`SET @@GLOBAL.GTID_PURGED`, `SET
+@@SESSION.SQL_LOG_BIN=0`) that require SUPER/SYSTEM_VARIABLES_ADMIN — privileges a normal
+least-privilege test-database user won't have, and won't need once Refresher passes
+`--set-gtid-purged=OFF` on export (fixed in this release).
 
 ## Testing
 

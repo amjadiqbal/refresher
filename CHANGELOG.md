@@ -16,3 +16,10 @@ All notable changes to `amjadiqbal/refresher` are documented here.
 - MySQL driver (shells out to `mysqldump`/`mysql`) and SQLite driver (plain
   file copy) behind a shared `SnapshotDriver` interface.
 - Postgres is a known, deliberate v1 limitation — see the README.
+
+### Fixed
+- MySQL snapshots now pass `--set-gtid-purged=OFF` to `mysqldump`. Without it, a server with
+  GTID/binary logging enabled emits statements on export that require SUPER/
+  SYSTEM_VARIABLES_ADMIN to run on restore — privileges a least-privilege test-database user
+  won't have. Found and fixed via a real integration test against an isolated MySQL instance
+  before this ever shipped.
